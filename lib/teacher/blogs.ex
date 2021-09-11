@@ -6,7 +6,7 @@ defmodule Teacher.Blogs do
   import Ecto.Query, warn: false
   alias Teacher.Repo
 
-  alias Teacher.Blogs.Post
+  alias Teacher.Blogs.{Comment, Post}
 
   @doc """
   Returns the list of posts.
@@ -20,6 +20,7 @@ defmodule Teacher.Blogs do
   def list_posts do
     Repo.all(Post)
   end
+
 
   @doc """
   Gets a single post.
@@ -36,6 +37,27 @@ defmodule Teacher.Blogs do
 
   """
   def get_post!(id), do: Repo.get!(Post, id)
+
+
+  @doc """
+  Gets a single preloaded post.
+
+  Raises `Ecto.NoResultsError` if the Post does not exist.
+
+  ## Examples
+
+      iex> get_preload_post!(123)
+      %Post{}
+
+      iex> get_preload_post!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_preload_post!(id) do
+    Post
+    |> Repo.get!(id)
+    |> Repo.preload(:comments)
+  end
 
   @doc """
   Creates a post.
@@ -101,4 +123,18 @@ defmodule Teacher.Blogs do
   def change_post(%Post{} = post, attrs \\ %{}) do
     Post.changeset(post, attrs)
   end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking comment changes.
+
+  ## Examples
+
+      iex> change_comment(comment)
+      %Ecto.Changeset{data: %Comment{}}
+
+  """
+  def change_comment(%Comment{} = comment, attrs \\ %{}) do
+    Comment.changeset(comment, attrs)
+  end
+  
 end

@@ -1,6 +1,6 @@
-# 001-getting-started-with-phoenix (Sept 2021)
+# 002-adding-comments-with-ecto-has-many-and-belongs-to (Sept 2021)
 ### Reference
-https://elixircasts.io/getting-started-with-phoenix#
+https://elixircasts.io/adding-comments-with-ecto-associations
 
 ### Using
   * Erlang 24.0
@@ -10,32 +10,16 @@ https://elixircasts.io/getting-started-with-phoenix#
 
 ### What I learnt
 
-  1. `mix phx.new teacher` to create a project
-  2.  set database secrets in `confg/dev.exs`
-  3. `mix ecto.create` to create a database
-  4. `mix phx.server` to run the server
-  5. `mix phx.gen html Schools Post posts title:string body:text` to generate a CRUD resource page
-
-  6. add routes `resources "/posts", PostController` to `web/router.ex` to enable the use
-  7. `mix ecto.migrate` to apply the database change in the folder `priv/repo/migrations`
-  8. `mix phx.routes` to see all the endpoints
+  1. `mix phx.gen.schema Comment comments body:text post_id:references:posts` to create a schema
+  2. All `controllers` in Phoenix are in `singular` while that in rails are usually in plurals.
+  3. Have to define your own `Context`, here is `Blogs` for data manipulations
+  4. Rely on module `Blogs` to do the handlers
 
 
 ### Notes for the latest version of phoenix
   
-  * `mix pheonix.server` is now as `mix phx.server`
-  * Context is needed for scaffolding files
-  ```
-  mix phx.gen.html **Accounts** User users name:string age:integer
-  ```
-  * File Structure: `teacher_web` is now under `lib`
-
-### Tips
-
-  * Set alias as follows in `.zshrc`
-  ```
-  alias mpn="mix phx.new"
-  alias mps="mix phx.server"
-  alias mec="mix ecto.create"
-  alias mem="mix ecto.migrate"
-  ```
+  * `mix pheonix.gen.model` is now as `mix phx.gen.schema`
+  * Since controllers and views are in `teacher_web`, they are under the module of `TeacherWeb`, not `Teacher`
+  * Similarly, we load `use TeacherWeb :controller`, instead `use Teacher.Web :controller`
+  * In the past, the context has defined as `Repo`, now it has to be configurable.
+ 

@@ -2,7 +2,7 @@ defmodule TeacherWeb.PostController do
   use TeacherWeb, :controller
 
   alias Teacher.Blogs
-  alias Teacher.Blogs.Post
+  alias Teacher.Blogs.{Comment, Post}
 
   def index(conn, _params) do
     posts = Blogs.list_posts()
@@ -27,8 +27,9 @@ defmodule TeacherWeb.PostController do
   end
 
   def show(conn, %{"id" => id}) do
-    post = Blogs.get_post!(id)
-    render(conn, "show.html", post: post)
+    post = Blogs.get_preload_post!(id)
+    comment_changeset = Blogs.change_comment(%Comment{})
+    render(conn, "show.html", post: post, comment_changeset: comment_changeset)
   end
 
   def edit(conn, %{"id" => id}) do
